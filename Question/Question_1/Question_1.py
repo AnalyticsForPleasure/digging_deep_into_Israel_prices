@@ -29,20 +29,21 @@ if __name__ == '__main__':
     data = df.filter(regex='Cottage|Soft white|Date') # 'Soft white cheese (250 grams)', Cottage cheese' (250 grams)'
     data_before_presenting = data.loc[276:480, :]
     #data_before_presenting['Soft white cheese (250 grams)'] = data_before_presenting['Soft white cheese (250 grams)'].apply(lambda x: f"{x:.2f}")
-    data_before_presenting.loc[:, 'Soft white cheese (250 grams)'] = data_before_presenting['Soft white cheese (250 grams)'].apply(lambda x: f"{x:.2f}")
+    data_before_presenting.loc[:,'price'] = data_before_presenting['Soft white cheese (250 grams)'].apply(lambda x: f"{x:.2f}")
 
     print('*')
 
     # Plotting the line chart
-    plt.plot(data_before_presenting['Date'], data_before_presenting['Soft white cheese (250 grams)'] , label='Line Chart')
-#
+    plt.plot(data_before_presenting['Date'], data_before_presenting['price'] , label='Line Chart')
+    data_before_presenting = data_before_presenting.sort_values(by='price')
+
     # Adding labels and title
     plt.xlabel('Year')
     plt.ylabel('Price')
-    plt.title('Simple Line Chart')
+    plt.title('Price of Soft white cheese  - over the last 2 decades')
 
     # Adding a legend
-    plt.legend()
+    #plt.legend()
 
     plt.show()
 
