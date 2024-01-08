@@ -5,6 +5,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 
+#https://cduvallet.github.io/posts/2018/03/slopegraphs-in-python
+
 
 def preparing_the_data(df):
     first_slope_graph = df.loc[(df['Year'] >= '1990') & (df['Year'] <= '2000')]
@@ -17,10 +19,11 @@ def preparing_the_data(df):
     first_slope_graph_filtered = first_slope_graph.iloc[[0, number_of_rows - 1], :]
     second_slope_graph_filtered = second_slope_graph.iloc[[0, number_of_rows - 1], :]
     third_slope_graph_filtered = third_slope_graph.iloc[[0, number_of_rows - 1], :]
+
     first_slope_graph_filtered = first_slope_graph_filtered.T
     second_slope_graph_filtered = second_slope_graph_filtered.T
     third_slope_graph_filtered = third_slope_graph_filtered.T
-
+    print('*')
     result_1 = first_slope_graph_filtered.rename(columns={204: 'first_day_1990', 335: 'last_day_2000'}, inplace=False)
     result_2 = second_slope_graph_filtered.rename(columns={204: 'first_day_2000', 335: 'last_day_2010'}, inplace=False)
     result_3 = third_slope_graph_filtered.rename(columns={204: 'first_day_2010', 335: 'last_day_2020'}, inplace=False)
@@ -47,3 +50,4 @@ if __name__ == '__main__':
     #1) What are the top 5 items that experienced a more significant decrease in prices compared to increases during the 90s and 2000s?
 
     preparing_the_data(df)
+    print('*')

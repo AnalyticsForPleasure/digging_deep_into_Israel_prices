@@ -36,15 +36,16 @@ if __name__ == '__main__':
     print('*')
 
     # Plotting the line chart
+
     # First line :
     plt.plot(data_before_presenting['Date'], data_before_presenting['price'] , label='Soft white cheese ')
     # Second line :
     plt.plot(data_before_presenting['Date'], data_before_presenting["Cottage cheese' (250 grams)"], label='Cottage_cheese')
-
     # Adding labels and title
     plt.xlabel('Year')
     plt.ylabel('Price')
-    plt.title('Price of Soft white cheese  - over the last 2 decades')
+    plt.title('Prices of Soft white cheese VS Cottage cheese \n over the last 2 decades' ,fontsize=30,weight='bold',fontname='Franklin Gothic Medium Cond')
+
 
     # Adding a legend
     #plt.legend()
