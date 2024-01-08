@@ -28,7 +28,12 @@ def preparing_the_data(df):
     result_2 = second_slope_graph_filtered.rename(columns={204: 'first_day_2000', 335: 'last_day_2010'}, inplace=False)
     result_3 = third_slope_graph_filtered.rename(columns={204: 'first_day_2010', 335: 'last_day_2020'}, inplace=False)
     df_numeric = result_1.apply(pd.to_numeric, errors='coerce')
-    result = result_1.dropna()
+    df_numeric_1 = result_2.apply(pd.to_numeric, errors='coerce')
+    df_numeric_2 = result_3.apply(pd.to_numeric, errors='coerce')
+    result = df_numeric.dropna()
+    result_2= df_numeric_1.dropna()
+    result_3 = df_numeric_2.dropna()
+
     print('*')
     return result_1 , result_2 , result_3
 
