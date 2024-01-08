@@ -6,6 +6,29 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 
 
+def preparing_the_data(df):
+    first_slope_graph = df.loc[(df['Year'] >= '1990') & (df['Year'] <= '2000')]
+    second_slope_graph = df.loc[(df['Year'] >= '2000') & (df['Year'] <= '2010')]
+    third_slope_graph = df.loc[(df['Year'] >= '2010') & (df['Year'] <= '2020')]
+
+    number_of_rows = first_slope_graph.shape[0]
+
+    # Retrieving the last row and the first row
+    first_slope_graph_filtered = first_slope_graph.iloc[[0, number_of_rows - 1], :]
+    second_slope_graph_filtered = second_slope_graph.iloc[[0, number_of_rows - 1], :]
+    third_slope_graph_filtered = third_slope_graph.iloc[[0, number_of_rows - 1], :]
+    first_slope_graph_filtered = first_slope_graph_filtered.T
+    second_slope_graph_filtered = second_slope_graph_filtered.T
+    third_slope_graph_filtered = third_slope_graph_filtered.T
+
+    result_1 = first_slope_graph_filtered.rename(columns={204: 'first_day_1990', 335: 'last_day_2000'}, inplace=False)
+    result_2 = second_slope_graph_filtered.rename(columns={204: 'first_day_2000', 335: 'last_day_2010'}, inplace=False)
+    result_3 = third_slope_graph_filtered.rename(columns={204: 'first_day_2010', 335: 'last_day_2020'}, inplace=False)
+    df_numeric = result_1.apply(pd.to_numeric, errors='coerce')
+    result = result_1.dropna()
+    print('*')
+    return result_1 , result_2 , result_3
+
 
 if __name__ == '__main__':
 
@@ -23,16 +46,4 @@ if __name__ == '__main__':
 
     #1) What are the top 5 items that experienced a more significant decrease in prices compared to increases during the 90s and 2000s?
 
-    df_filtered = df.loc[(df['Year'] >= '2000') & (df['Year'] <= '2010')]
-    print('*')
-    number_of_rows = df_filtered.shape[0]
-
-    #Retrieving the last row and the first row
-    df_filtered = df_filtered.iloc[[0, number_of_rows - 1], :]
-    df_filtered = df_filtered.T
-    df_filtered = df_filtered.dropna()
-    #df_filtered_cleaner = df_filtered.dropna()
-    result = df_filtered.rename(columns={204: 'first_day_2000', 335: 'last_day_2010'},inplace=False)
-    df_numeric = df_filtered.apply(pd.to_numeric, errors='coerce')
-    df_filtered = result.dropna()
-    print('*')
+    preparing_the_data(df)
