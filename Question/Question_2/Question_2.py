@@ -33,29 +33,30 @@ def preparing_the_data(df):
 
 def creating_the_line_chart(final_data ,my_list_colors):
 
-    years = list(final_data.loc[:,'Year']) # 'years=x_values' line represents X- axis values
-    chicken_Breast = list(final_data.loc[:,'Chicken Breast (1 kg)'])
-    bananas = list(final_data.loc[:,'bananas (1 kg)'])
-    lemons = list(final_data.loc[:, 'lemons (1 kg)'])
-    avocado = list(final_data.loc[:, 'Avocado (1 kg)'])
-    Apples = list(final_data.iloc[:, 'Apples - Granny Smith (1 kg)'])
 
-    list_items = [chicken_Breast ,bananas,lemons,avocado,Apples]
+    years = list(final_data.loc[:,'Year']) # 'years=x_values' line represents X- axis values
+    chicken_breast = list(pd.to_numeric(final_data.loc[:,'Chicken Breast (1 kg)']))
+    bananas = list(pd.to_numeric(final_data.loc[:,'bananas (1 kg)']))
+    #lemons = list(pd.to_numeric(final_data.loc[:, 'lemons (1 kg)']))
+    avocado = list(pd.to_numeric(final_data.loc[:, 'Avocado (1 kg)']))
+    # apples = list(final_data.iloc[:, 'Apples - Granny Smith (1 kg)'])
+
+    list_items = [chicken_breast ,bananas,avocado ]#,apples] ,lemons,
     print('*')
     # plt.style.use('seaborn')  # this time we add this labrary
-    for specific_item,my_list_colors in zip( list_items,my_list_colors):
+    for specific_item,specific_color in zip( list_items,my_list_colors):
         plt.plot(years,
                  specific_item,
-                 color=list_items,
+                 color=specific_color,
                  linestyle='-',
                  linewidth=1,
-                 marker='*',
+                 marker='o',
                  markersize=10,
                  label='Alice')
 
-    plt.title('Remaining Money (USD) for 10 Days')
-    plt.xlabel('Days')
-    plt.ylabel('Money')
+    plt.title('Prices of six items over the years')
+    plt.xlabel('Years')
+    plt.ylabel('Price')
     # plt.legend()
     plt.show()
 
@@ -69,7 +70,7 @@ if __name__ == '__main__':
     column_headers = list(df.columns.values)
     print("The Column Header :", column_headers)
 
-    list_of_colors = ['Green', 'Blue', 'Navy', 'lightblue', 'lightgreen', ]
+    list_of_colors = ['Green', 'Blue' , 'lightblue']#, 'lightgreen' ] ,'Navy',
     # #1) What are the top 5 items that experienced a more significant decrease in prices compared to increases during the 90s and 2000s?
     #
     res = preparing_the_data(df)
