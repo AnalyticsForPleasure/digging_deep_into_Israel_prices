@@ -7,35 +7,57 @@ import matplotlib.lines as mlines
 
 #https://cduvallet.github.io/posts/2018/03/slopegraphs-in-python
 
-
 def preparing_the_data(df):
-    first_slope_graph = df.loc[(df['Year'] >= '1990') & (df['Year'] <= '2000')]
-    second_slope_graph = df.loc[(df['Year'] >= '2000') & (df['Year'] <= '2010')]
-    third_slope_graph = df.loc[(df['Year'] >= '2010') & (df['Year'] <= '2020')]
+    relavent_years = np.arange(1990, 2021, 5)
 
-    number_of_rows = first_slope_graph.shape[0]
+    filter_data_by_month= df.loc[df['Month'] == 1, :]
+    filter_data_by_month_year = filter_data_by_month[filter_data_by_month['Year'].isin(relavent_years)]
 
-    # Retrieving the last row and the first row
-    first_slope_graph_filtered = first_slope_graph.iloc[[0, number_of_rows - 1], :]
-    second_slope_graph_filtered = second_slope_graph.iloc[[0, number_of_rows - 1], :]
-    third_slope_graph_filtered = third_slope_graph.iloc[[0, number_of_rows - 1], :]
+    relevant_items = ['Chicken Breast (1 kg)',
+                      'bananas (1 kg)',
+                      'lemons (1 kg)',
+                      'Avocado (1 kg)',
+                      'Apples - Granny Smith (1 kg)',
+                      'Potatoes (1 kg)']
 
-    first_slope_graph_filtered = first_slope_graph_filtered.T
-    second_slope_graph_filtered = second_slope_graph_filtered.T
-    third_slope_graph_filtered = third_slope_graph_filtered.T
+    column_indices = [df.columns.get_loc(col) for col in relevant_items]
+    full_relevant_data = filter_data_by_month_year.iloc[:, column_indices]
+    full_relevant_data = pd.DataFrame(full_relevant_data).set_index([relavent_years])
     print('*')
-    result_1 = first_slope_graph_filtered.rename(columns={204: 'first_day_1990', 335: 'last_day_2000'}, inplace=False)
-    result_2 = second_slope_graph_filtered.rename(columns={204: 'first_day_2000', 335: 'last_day_2010'}, inplace=False)
-    result_3 = third_slope_graph_filtered.rename(columns={204: 'first_day_2010', 335: 'last_day_2020'}, inplace=False)
-    df_numeric = result_1.apply(pd.to_numeric, errors='coerce')
-    df_numeric_1 = result_2.apply(pd.to_numeric, errors='coerce')
-    df_numeric_2 = result_3.apply(pd.to_numeric, errors='coerce')
-    result = df_numeric.dropna()
-    result_2= df_numeric_1.dropna()
-    result_3 = df_numeric_2.dropna()
-
+    full_relevant_data = full_relevant_data.reset_index()
+    full_relevant_df =full_relevant_data.rename(columns={full_relevant_data.columns[0]: 'Year'},inplace=True)
     print('*')
-    return result_1 , result_2 , result_3
+
+    return full_relevant_data
+
+
+def creating_the_line_chart(final_data ,my_list_colors):
+
+    years = list(final_data.loc[:,'Year']) # 'years=x_values' line represents X- axis values
+    chicken_Breast = list(final_data.loc[:,'Chicken Breast (1 kg)'])
+    bananas = list(final_data.loc[:,'bananas (1 kg)'])
+    lemons = list(final_data.loc[:, 'lemons (1 kg)'])
+    avocado = list(final_data.loc[:, 'Avocado (1 kg)'])
+    Apples = list(final_data.iloc[:, 'Apples - Granny Smith (1 kg)'])
+
+    list_items = [chicken_Breast ,bananas,lemons,avocado,Apples]
+    print('*')
+    # plt.style.use('seaborn')  # this time we add this labrary
+    for specific_item,my_list_colors in zip( list_items,my_list_colors):
+        plt.plot(years,
+                 specific_item,
+                 color=list_items,
+                 linestyle='-',
+                 linewidth=1,
+                 marker='*',
+                 markersize=10,
+                 label='Alice')
+
+    plt.title('Remaining Money (USD) for 10 Days')
+    plt.xlabel('Days')
+    plt.ylabel('Money')
+    # plt.legend()
+    plt.show()
 
 
 if __name__ == '__main__':
@@ -44,15 +66,12 @@ if __name__ == '__main__':
     df = pd.read_csv('/home/shay_diy/PycharmProjects/digging_deep_into_Israel_prices/Data/israel_prices.csv')
     df = df.replace(np.nan, '', regex=True)
 
-    # In order to concanate the 2 column of the "Year" and "Month" we need to convert to string if needed
-    df['Year'] = df['Year'].astype(str)
-    df['Month'] = df['Month'].astype(str)
+    column_headers = list(df.columns.values)
+    print("The Column Header :", column_headers)
 
-    # very important - # Combine 'Year' and 'Month' columns to create a datetime index
-    df['Date'] = pd.to_datetime(df[['Year', 'Month']].assign(DAY=1))
-    print('*')
-
-    #1) What are the top 5 items that experienced a more significant decrease in prices compared to increases during the 90s and 2000s?
-
-    preparing_the_data(df)
+    list_of_colors = ['Green', 'Blue', 'Navy', 'lightblue', 'lightgreen', ]
+    # #1) What are the top 5 items that experienced a more significant decrease in prices compared to increases during the 90s and 2000s?
+    #
+    res = preparing_the_data(df)
+    creating_the_line_chart(res,list_of_colors)
     print('*')
