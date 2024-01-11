@@ -97,7 +97,6 @@ if __name__ == '__main__':
     df = df.replace(np.nan, '', regex=True)
 
 
-
     column_headers = list(df.columns.values)
     print("The Column Header :", column_headers)
 
