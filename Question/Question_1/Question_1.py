@@ -16,59 +16,50 @@ if __name__ == '__main__':
 
     plt.subplot(1, 2, 1)
 
-    # In order to concanate the 2 column of the "Year" and "Month" we need to convert to string if needed
-    df['Year'] = df['Year'].astype(str)
-    df['Month'] = df['Month'].astype(str)
+    relavent_years = np.arange(2006, 2023, 2)
 
-    # very important - # Combine 'Year' and 'Month' columns to create a datetime index
-    df['Date'] = pd.to_datetime(df[['Year', 'Month']].assign(DAY=1))
-
-    # In order to rearrange columns (move last column to the first position)
-    df = df[[df.columns[-1]] + list(df.columns[:-1])]
-    column_headers = list(df.columns.values)
-    print("The Column Header :", column_headers)
+    filter_data_by_month= df.loc[df['Month'] == 1, :]
+    filter_data_by_month_year = filter_data_by_month[filter_data_by_month['Year'].isin(relavent_years)]
+    print('*')
 
 
-
-    data = df.filter(regex='Cottage|Soft white|Date') # 'Soft white cheese (250 grams)', Cottage cheese' (250 grams)'
-    data_before_presenting = data.loc[276:480, :]
-
-    #data_before_presenting['Soft white cheese (250 grams)'] = data_before_presenting['Soft white cheese (250 grams)'].apply(lambda x: f"{x:.2f}")
-    data_before_presenting.loc[:,'price'] = data_before_presenting['Soft white cheese (250 grams)'].apply(lambda x: f"{x:.2f}")
-    data_before_presenting['price'] = pd.to_numeric(df['Soft white cheese (250 grams)'], errors='coerce')
+    data = filter_data_by_month_year.filter(regex='Cottage|Soft white|Year') # 'Soft white cheese (250 grams)', Cottage cheese' (250 grams)'
     print('*')
 
     # Plotting the line chart
-    x_values = data_before_presenting['Date']
+    x_values = list(data.loc[:,'Year'])
+    y_values_white_cheese = list(data.loc[:,'Soft white cheese (250 grams)'])
+    y_values_cottage = list(data.loc[:, "Cottage cheese' (250 grams)"])
+    print('*')
     # First line :
     plt.subplot(1, 2, 1)
     #plt.style.use('fivethirtyeight')
-    plt.plot(x_values, data_before_presenting['price'] , label='Soft white cheese ',linewidth=3.5 , color='navy' )
-    plt.fill_between(x_values, data_before_presenting['price'], color='skyblue', alpha=0.4, label='Filled Area')
+    plt.plot(x_values, y_values_white_cheese , label='Soft white cheese ',linewidth=3.5 , color='navy' )
+    plt.fill_between(x_values, y_values_white_cheese, color='skyblue', alpha=0.4, label='Filled Area')
 
     plt.title('Soft white cheese price over the years',fontname='Franklin Gothic Medium Cond', color= 'gray', fontsize=21)
 
     # Second line :
 
     plt.subplot(1, 2, 2)
-    plt.plot(x_values, data_before_presenting["Cottage cheese' (250 grams)"], label='Cottage_cheese', linewidth=4 ,color='green')
-    plt.fill_between(x_values, data_before_presenting['price'], color='lightgreen', alpha=0.4, label='Filled Area')
+    plt.plot(x_values,y_values_cottage , label='Cottage_cheese', linewidth=4 ,color='green')
+    plt.fill_between(x_values, y_values_cottage, color='lightgreen', alpha=0.4, label='Filled Area')
     plt.title('Cottage cheese price over the years',fontname='Franklin Gothic Medium Cond', color= 'gray',fontsize=21)
 
     plt.tick_params(bottom=False, top=False,
                    left=False, right=False)
 
     # Remove the frame (spines) from the second subplot
-    plt[0,1].spines['top'].set_visible(False)
-    # ax2.spines['right'].set_visible(False)
-    # ax2.spines['bottom'].set_visible(False)
-    ax2.spines['left'].set_visible(False)
+    # plt[0,1].spines['top'].set_visible(False)
+    # # ax2.spines['right'].set_visible(False)
+    # # ax2.spines['bottom'].set_visible(False)
+    # ax2.spines['left'].set_visible(False)
 
     # Adding labels and title
 
     plt.xlabel('Year')
     plt.ylabel('Price')
-    plt.suptitle('Comparison between 2 alternative dairy products' ,fontsize=29,weight='bold',fontname='Franklin Gothic Medium Cond')
+    plt.suptitle('Comparison between Cottage Cheese and Soft White Cheese as Substitute Products' ,fontsize=29,weight='bold',fontname='Franklin Gothic Medium Cond')
 
 
     # Adding a legend
