@@ -52,8 +52,8 @@ if __name__ == '__main__':
     full_relevant_data = filter_data_by_month_year.iloc[:, column_indices]
     full_relevant_data = full_relevant_data.apply(pd.to_numeric)
     percentage_changes = full_relevant_data.pct_change()
-    formatted_percentage_changes = percentage_changes.applymap(lambda x: f"{x * 100:.2f}")
-    traspose_data =formatted_percentage_changes.T
+    #formatted_percentage_changes = percentage_changes.applymap(lambda x: f"{x * 100:.2f}")
+    traspose_data =percentage_changes.T
 
     # rename_columns
     old_names = [84,144,204,264,324,384,444]
@@ -63,17 +63,27 @@ if __name__ == '__main__':
     res = res.rename(columns={res.columns[0]: 'Item_Name'})
 
     relevant_data = res.loc[:,['Item_Name','Price_change_2020']]
+    relevant_data_sorted = relevant_data.sort_values(by='Price_change_2020', ascending=False)
+    relevant_data_sorted =relevant_data_sorted.reset_index()
+    relevant_data_sorted = relevant_data_sorted.drop('index', axis=1)
+    #relevant_data_sorted = relevant_data_sorted['Price_change_2020'].apply(lambda x: f'{x * 100:.1f}')
+
+
+
+    #relevant_data_sorted = res.loc[:,['Item_Name','Price_change_2020']]
     print('*')
 
 
-    plt.figure(figsize=(10, 6))
-    ax = sns.barplot(data=relevant_data, y='Item_Name', x=[100] * len(relevant_data), color='lightgrey', saturation=1)
-    sns.barplot(data=relevant_data, y='Item_Name', x='Price_change_2020', color='tomato', saturation=1, ax=ax)
+
+
+    plt.figure(figsize=(6, 6))
+    ax = sns.barplot(data=relevant_data_sorted, y='Item_Name', x=[1] * len(relevant_data_sorted), color='lightgrey', saturation=1)
+    sns.barplot(data=relevant_data_sorted, y='Item_Name', x='Price_change_2020', color='skyblue', saturation=1, ax=ax)
 
     for lbl in ax.get_yticklabels():
-        # add the y tick labels as right aligned text into the plot
-        ax.text(0.985, lbl.get_position()[1], lbl.get_text(), transform=ax.get_yaxis_transform(), ha='right', va='center')
-    ax.bar_label(ax.containers[1], fmt=' %.2f %%')  # label the bars
+        #add the y tick labels as right aligned text into the plot
+        ax.text(0.985, lbl.get_position()[1], lbl.get_text(), transform=ax.get_yaxis_transform(), ha='right', va='center',fontname='Franklin Gothic Medium Cond',fontsize=16, fontweight='bold')
+    ax.bar_label(ax.containers[1], fmt='%.2f %%',fontname='Franklin Gothic Medium Cond',fontsize=14, fontweight='bold')  # label the bars ' %.2f %%'
     ax.set_xticks([])  # remove the x ticks
     ax.set_yticks([])  # remove the y ticks
     ax.xaxis.set_label_position('top')
