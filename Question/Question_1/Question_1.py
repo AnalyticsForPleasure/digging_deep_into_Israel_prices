@@ -66,7 +66,6 @@ def plotting_advance_bar_plot(relevant_data_sorted):
     ax.set_xticks([])  # remove the x ticks
     ax.set_yticks([])  # remove the y ticks
     ax.xaxis.set_label_position('top')
-
     ax.xaxis.label.set_size(20)
     ax.set_ylabel('')  # remove the y label
     ax.margins(x=0)  # remove the spacing at the right
