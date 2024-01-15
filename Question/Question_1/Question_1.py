@@ -7,7 +7,11 @@ import matplotlib.lines as mlines
 #import seaborn as sys
 import seaborn as sns
 
-
+# **************************************************************************************************************
+# Function  name: creating_the_relavent_data
+# input:
+# return value:
+# ****************************************************************************************************************
 def creating_the_relavent_data(df):
 
     # step 1: filtering the years
@@ -29,13 +33,13 @@ def creating_the_relavent_data(df):
                               # 'Green grapes without pits (1 kg)',
                               'lemons (1 kg)',
                               'Cucumbers (1 kg)']
-    # 'Tomatoes'
+
     # Step 2: filtering the data by specific data I need
     column_indices = [filter_data_by_month_year.columns.get_loc(col) for col in filter_vegi_and_fruits]
     full_relevant_data = filter_data_by_month_year.iloc[:, column_indices]
     full_relevant_data = full_relevant_data.apply(pd.to_numeric)
     percentage_changes = full_relevant_data.pct_change()
-    # formatted_percentage_changes = percentage_changes.applymap(lambda x: f"{x * 100:.2f}")
+
     traspose_data = percentage_changes.T
     # rename_columns
     old_names = [84, 144, 204, 264, 324, 384, 444]
@@ -52,7 +56,11 @@ def creating_the_relavent_data(df):
 
     return relevant_data_sorted
 
-
+# **************************************************************************************************************
+# Function  name: plotting_advance_bar_plot
+# input:
+# return value:
+# ****************************************************************************************************************
 def plotting_advance_bar_plot(relevant_data_sorted):
     plt.figure(figsize=(6, 6))
     ax = sns.barplot(data=relevant_data_sorted, y='Item_Name', x=[1] * len(relevant_data_sorted), color='lightgrey',saturation=1)
