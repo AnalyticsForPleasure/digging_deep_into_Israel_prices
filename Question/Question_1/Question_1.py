@@ -62,7 +62,7 @@ def plotting_advance_bar_plot(relevant_data_sorted):
         # add the y tick labels as right aligned text into the plot
         ax.text(0.985, lbl.get_position()[1], lbl.get_text(), transform=ax.get_yaxis_transform(), ha='right',
                 va='center', fontname='Franklin Gothic Medium Cond', fontsize=16, fontweight='bold')
-    ax.bar_label(ax.containers[1], fmt='%.2f %%', fontname='Franklin Gothic Medium Cond', fontsize=14,fontweight='bold')  # label the bars ' %.2f %%'
+    ax.bar_label(ax.containers[1], fmt='%d%%', fontname='Franklin Gothic Medium Cond', fontsize=14,fontweight='bold')  # label the bars ' %.2f %%'
     ax.set_xticks([])  # remove the x ticks
     ax.set_yticks([])  # remove the y ticks
     ax.xaxis.set_label_position('top')
@@ -71,7 +71,7 @@ def plotting_advance_bar_plot(relevant_data_sorted):
     ax.margins(x=0)  # remove the spacing at the right
     sns.despine(left=True, bottom=True)  # remove the spines
     plt.tight_layout()
-    plt.title("Price increase between the years 2015 - 2020", loc='center',fontproperties='Franklin Gothic Medium Cond', size=32, color='slategray', pad=30)  # }
+    plt.title("Increase in vegetable prices from 2015 to 2020.", loc='center',fontproperties='Franklin Gothic Medium Cond', size=32, color='slategray', pad=30)  # }
     plt.savefig('plotting_advance_bar_plot.jpg', dpi=250, bbox_inches='tight')
     plt.show()
 
