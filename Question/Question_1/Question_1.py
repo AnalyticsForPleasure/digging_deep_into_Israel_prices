@@ -52,7 +52,12 @@ def creating_the_relavent_data(df):
     res = res.rename(columns={res.columns[0]: 'Item_Name'})
     res =res.reset_index()
     res = res.drop('index', axis=1)
+
+    # Remove "(1 kg)" from the 'Item_Name' column
+    res['Item_Name'] = res['Item_Name'].apply(lambda x: x.replace('(1 kg)', ''))
+
     print('*')
+
 
     return res
 
@@ -62,7 +67,7 @@ def creating_the_relavent_data(df):
 # return value:
 # ****************************************************************************************************************
 def plotting_advance_bar_plot(relevant_data_sorted,current_range_of_year,current_palette):
-    plt.figure(figsize=(6, 6))
+    plt.figure(figsize=(8, 6))
 
     relevant_data_sorted = relevant_data_sorted.sort_values(by=current_range_of_year, ascending=False)
     relevant_data_sorted = relevant_data_sorted.reset_index()
@@ -80,9 +85,8 @@ def plotting_advance_bar_plot(relevant_data_sorted,current_range_of_year,current
     for lbl in ax.get_yticklabels():
         # add the y tick labels as right aligned text into the plot
         ax.text(0.985, lbl.get_position()[1], lbl.get_text(), transform=ax.get_yaxis_transform(), ha='right',
-                va='center', fontname='Franklin Gothic Medium Cond', fontsize=18, fontweight='bold')
+                va='center', fontname='Franklin Gothic Medium Cond', fontsize=16, fontweight='bold')
     ax.bar_label(ax.containers[1], fmt='%.1f%%', fontname='Franklin Gothic Medium Cond', fontsize=14,fontweight='bold')  # label the bars ' %.2f %%'
-
     ax.set_xticks([])  # remove the x ticks
     ax.set_yticks([])  # remove the y ticks
     #ax.xaxis.set_label_position('top')
@@ -92,7 +96,8 @@ def plotting_advance_bar_plot(relevant_data_sorted,current_range_of_year,current
     ax.margins(x=0)  # remove the spacing at the right
     sns.despine(left=True, bottom=True)  # remove the spines
     plt.tight_layout()
-    plt.title(f"Increase in vegetable & fruits prices\n from {int(current_range_of_year) - 5} to {current_range_of_year}", loc='center',fontproperties='Franklin Gothic Medium Cond', size=32, color='slategray', pad=30)  # }
+
+    plt.title(f"Increase in vegetable & fruits prices\n from {int(current_range_of_year) - 5} to {current_range_of_year}", loc='center',fontproperties='Franklin Gothic Medium Cond', size=30, color='slategray', pad=30)  # }
     plt.savefig(f'plotting_advance_bar_plot_year_{current_range_of_year}.jpg', dpi=250, bbox_inches='tight')
     plt.show()
 
@@ -102,8 +107,8 @@ if __name__ == '__main__':
     df = pd.read_csv('/home/shay_diy/PycharmProjects/digging_deep_into_Israel_prices/Data/israel_prices.csv')
     df = df.replace(np.nan, '', regex=True)
 
-    list_of_ranges = ['2005','2010','2015', '2020'] # ['Price_change_2005','Price_change_2010',
-    list_of_palettes = ['Blues','flare','crest','rocket_r']
+    list_of_ranges =  ['2005','2010','2015', '2020']
+    list_of_palettes = ['rocket_r','crest','flare','Blues']
 
     column_headers = list(df.columns.values)
     print("The Column Header :", column_headers)
