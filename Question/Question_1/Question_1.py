@@ -63,7 +63,7 @@ def creating_the_relavent_data(df):
 # ****************************************************************************************************************
 def plotting_advance_bar_plot(res):
 
-    fig, axes = plt.subplots(1, 2, figsize=(15, 4))
+    fig, axes = plt.subplots(1, 2, figsize=(10, 7))
     list_of_colors = ['royalblue','deepskyblue']
     list_of_ranges_of_years = ['2015', '2020']
 
