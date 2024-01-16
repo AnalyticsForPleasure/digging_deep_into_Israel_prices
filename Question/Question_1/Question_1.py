@@ -17,35 +17,46 @@ def creating_the_relavent_data(df):
     filter_data_by_month = df.loc[df['Month'] == 1, :]
     filter_data_by_month_year = filter_data_by_month[filter_data_by_month['Year'].isin(relavent_years)]
     print('*')
-    filter_vegi_and_fruits = ['Apples - Golden Delicious (1 kg)',
-                              'Apples - Granny Smith (1 kg)',
-                              # 'Apples - Jonathan (1 kg)',
-                              'Avocado (1 kg)',
-                              # 'Oranges - Valencia (1 kg)',
-                              'Oranges - smutty (1 kg)',
-                              # 'Light green pepper (1 kg)',
-                              # 'Dark green pepper (1 kg)',
-                              # 'Melons - Galia (1 kg)',
-                              'Green bins (1 kg)',
-                              'Carrot (1 kg)',
-                              # 'Green grapes without pits (1 kg)',
-                              'lemons (1 kg)',
-                              'Cucumbers (1 kg)']
+    # filter_vegi_and_fruits = ['Apples - Golden Delicious (1 kg)',
+    #                           'Apples - Granny Smith (1 kg)',
+    #                           'Oranges - smutty (1 kg)',
+    #                           'Green bins (1 kg)',
+    #                           'mango (1 kg)',
+    #                           'Carrot (1 kg)',
+    #                           'Zucchini (1 kg)',
+    #                           'Tomatoes - Cherry (1 kg)',
+    #                           'lemons (1 kg)',
+    #                           #'Potatoes (1 kg)',
+    #                           'Cucumbers (1 kg)']
+
+
+    filter_meat_fish_and_chicken = ['Chicken Breast (1 kg)',
+                                    'Chicken meat with toppings (1 portion)',
+                                    'Fresh beef for steak - shoulder (1 kg)',
+                                    'Frozen beef for roasting (1 kg)',
+                                    'Fresh tilapia fish (1 kg)',
+                                    'Frozen beef - ribs (1 kg)',
+                                    'Frozen beef liver (1 kg)',
+                                    'Packaged frozen chicken (1 kg)',
+                                    'Frozen salmon fish (Ilatit). (1 kg)',
+                                    'Frozen tilapia fillet fish (Mosht). (1 kg)',
+                                    'Nile princess fillet fish, frozen (1 kg)']
+
 
     # Step 2: filtering the data by specific data I need
-    column_indices = [filter_data_by_month_year.columns.get_loc(col) for col in filter_vegi_and_fruits]
+    column_indices = [filter_data_by_month_year.columns.get_loc(col) for col in filter_meat_fish_and_chicken] # filter_vegi_and_fruits
     full_relevant_data = filter_data_by_month_year.iloc[:, column_indices]
     full_relevant_data = full_relevant_data.apply(pd.to_numeric)
     percentage_changes = full_relevant_data.pct_change()
 
-    traspose_data = percentage_changes.T
-    traspose_data = traspose_data.apply(lambda x: x * 100)
+    transpose_data = percentage_changes.T
+    transpose_data = transpose_data.apply(lambda x: x * 100)
 
     # rename_columns
     old_names = [84, 144, 204, 264, 324, 384, 444]
     new_names = ['1990', '1995', '2000', '2005',
                  '2010', '2015', '2020']
-    res = traspose_data.rename(columns=dict(zip(old_names, new_names)), inplace=False)
+    res = transpose_data.rename(columns=dict(zip(old_names, new_names)), inplace=False)
     res = res.reset_index()
     res = res.rename(columns={res.columns[0]: 'Item_Name'})
     res = res.reset_index()
@@ -63,8 +74,9 @@ def creating_the_relavent_data(df):
 # ****************************************************************************************************************
 def plotting_advance_bar_plot(res):
 
-    fig, axes = plt.subplots(1, 2, figsize=(10, 7))
-    list_of_colors = ['royalblue','deepskyblue']
+    fig, axes = plt.subplots(1, 2, figsize=(10, 3))
+    #list_of_colors = ['royalblue','deepskyblue']
+    list_of_colors = ['limegreen','teal']
     list_of_ranges_of_years = ['2015', '2020']
 
     for idx, (current_range_of_year, current_color) in enumerate(zip(list_of_ranges_of_years, list_of_colors)):
@@ -85,17 +97,14 @@ def plotting_advance_bar_plot(res):
         ax.margins(x=0)  # remove the spacing at the right
         sns.despine(left=True, bottom=True)  # remove the spines
 
-        # plt.title(f"Increase in vegetable & fruits prices\n from {int(current_range_of_year) - 5} to {current_range_of_year}",
-        #           loc='center', fontproperties='Franklin Gothic Medium Cond', size=20, color='slategray', pad=10 )
         ax.set_title(f"Increase in prices {int(current_range_of_year) - 5} to {current_range_of_year}", loc='center',
                      size=14, color='slategray', pad=10,fontname='Franklin Gothic Medium Cond', fontsize=16)
 
     plt.tight_layout()
-    fig.suptitle("Ten-Year Price Trends in Vegetables and Fruits", fontweight='bold',fontproperties='Franklin Gothic Medium Cond', size=26)
-
-    #plt.title(f"Increase in vegetable & fruits prices",loc='center', fontproperties='Franklin Gothic Medium Cond', size=20, color='slategray', pad=10 )
+    fig.suptitle("Ten-Year Price Trends in Vegetables and Fruits", fontweight='bold',fontproperties='Franklin Gothic Medium Cond', size=26) # Ten-Year Price Trends in Vegetables and Fruits #Ten-Year Price Trends in Meat, Fish and Chicken
 
     plt.savefig(f'plotting_advance_bar_plot_year.jpg', dpi=250, bbox_inches='tight')
+
 
     plt.show()
 
