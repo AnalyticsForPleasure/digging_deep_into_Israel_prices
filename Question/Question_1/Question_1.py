@@ -67,37 +67,35 @@ def creating_the_relavent_data(df):
 # return value:
 # ****************************************************************************************************************
 def plotting_advance_bar_plot(relevant_data_sorted,current_range_of_year,current_palette):
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(4, 6))
 
     relevant_data_sorted = relevant_data_sorted.sort_values(by=current_range_of_year, ascending=False)
     relevant_data_sorted = relevant_data_sorted.reset_index()
     relevant_data_sorted = relevant_data_sorted.drop('index', axis=1)
+    print('*')
+    # y_value= relevant_data_sorted.loc[:,'Item_Name']
+    # x_value= relevant_data_sorted.loc[:,current_range_of_year]
+    #
+    # ax = sns.barplot(data=relevant_data_sorted, y=y_value, x=[100] * len(relevant_data_sorted), color='lightgrey',saturation=1) # y='Item_Name'
+    # sns.barplot(data=relevant_data_sorted, y=y_value , x=x_value ,palette=current_palette , saturation=1, ax=ax) # color='skyblue' # y='Item_Name', x='Price_change_2020' Blues , flare , crest
 
-    y_value= relevant_data_sorted.loc[:,'Item_Name']
-    x_value= relevant_data_sorted.loc[:,current_range_of_year]
-
-    ax = sns.barplot(data=relevant_data_sorted, y=y_value, x=[100] * len(relevant_data_sorted), color='lightgrey',saturation=1) # y='Item_Name'
-    sns.barplot(data=relevant_data_sorted, y=y_value , x=x_value ,palette=current_palette , saturation=1, ax=ax) # color='skyblue' # y='Item_Name', x='Price_change_2020' Blues , flare , crest
-
-    # for idx in np.arange(0,relevant_data_sorted.shape[0]):
-    #     lbl = relevant_data_sorted[idx].split("(")[0].strip()
-    # print('*')
+    plt.figure(figsize=(6, 6))
+    ax = sns.barplot(data=relevant_data_sorted, y=relevant_data_sorted.loc[:,'Item_Name'], x=[100] * len(relevant_data_sorted), color='lightgrey', saturation=1)
+    sns.barplot(data=relevant_data_sorted, y=relevant_data_sorted.loc[:,'Item_Name'], x=relevant_data_sorted.loc[:,current_range_of_year], color='skyblue', saturation=1, ax=ax)
     for lbl in ax.get_yticklabels():
         # add the y tick labels as right aligned text into the plot
         ax.text(0.985, lbl.get_position()[1], lbl.get_text(), transform=ax.get_yaxis_transform(), ha='right',
                 va='center', fontname='Franklin Gothic Medium Cond', fontsize=16, fontweight='bold')
-    ax.bar_label(ax.containers[1], fmt='%.1f%%', fontname='Franklin Gothic Medium Cond', fontsize=14,fontweight='bold')  # label the bars ' %.2f %%'
+    ax.bar_label(ax.containers[1], fmt=' %.2f %%', fontname='Franklin Gothic Medium Cond', fontsize=14,
+                 fontweight='bold')  # label the bars
     ax.set_xticks([])  # remove the x ticks
     ax.set_yticks([])  # remove the y ticks
-    #ax.xaxis.set_label_position('top')
-    #ax.xaxis.label.set_size(20)
-    ax.set_xlabel('')
+    ax.set_xlabel('')  # remove the x label
     ax.set_ylabel('')  # remove the y label
     ax.margins(x=0)  # remove the spacing at the right
     sns.despine(left=True, bottom=True)  # remove the spines
     plt.tight_layout()
-
-    plt.title(f"Increase in vegetable & fruits prices\n from {int(current_range_of_year) - 5} to {current_range_of_year}", loc='center',fontproperties='Franklin Gothic Medium Cond', size=30, color='slategray', pad=30)  # }
+    plt.title(f"Increase in vegetable & fruits prices\n from {int(current_range_of_year) - 5} to {current_range_of_year}", loc='center',fontproperties='Franklin Gothic Medium Cond', size=24, color='slategray', pad=30)  # }
     plt.savefig(f'plotting_advance_bar_plot_year_{current_range_of_year}.jpg', dpi=250, bbox_inches='tight')
     plt.show()
 
