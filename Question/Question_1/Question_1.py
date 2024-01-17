@@ -30,7 +30,7 @@ def creating_the_relavent_data(df):
     #                           'Cucumbers (1 kg)']
 
 
-    filter_meat_fish_and_chicken = ['Chicken Breast (1 kg)',
+    filter_meat_fish_and_chicken = [#'Chicken Breast (1 kg)',
                                     'Chicken meat with toppings (1 portion)',
                                     'Fresh beef for steak - shoulder (1 kg)',
                                     'Frozen beef for roasting (1 kg)',
@@ -101,7 +101,7 @@ def plotting_advance_bar_plot(res):
                      size=14, color='slategray', pad=10,fontname='Franklin Gothic Medium Cond', fontsize=16)
 
     plt.tight_layout()
-    fig.suptitle("Ten-Year Price Trends in Vegetables and Fruits", fontweight='bold',fontproperties='Franklin Gothic Medium Cond', size=26) # Ten-Year Price Trends in Vegetables and Fruits #Ten-Year Price Trends in Meat, Fish and Chicken
+    fig.suptitle("Ten-Year Price Trends in Meat, Fish and Chicken", fontweight='bold',fontproperties='Franklin Gothic Medium Cond', size=26) # Ten-Year Price Trends in Vegetables and Fruits #Ten-Year Price Trends in Meat, Fish and Chicken
 
     plt.savefig(f'plotting_advance_bar_plot_year.jpg', dpi=250, bbox_inches='tight')
 
