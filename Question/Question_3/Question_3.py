@@ -11,13 +11,7 @@ if __name__ == '__main__':
 
     filter_data_by_year = df.loc [(df['Year'] <= 2022) & (df['Year'] > 2012)]
 
-    food_items = [ 'Year',
-        'Apples - Golden Delicious (1 kg)',
-                              'Apples - Granny Smith (1 kg)',
-                              'Oranges - smutty (1 kg)',
-                              'Green bins (1 kg)',
-                              'mango (1 kg)',
-                              'Carrot (1 kg)'],
+    food_items = [ 'Year', 'Apples - Golden Delicious (1 kg)', 'Apples - Granny Smith (1 kg)', 'Oranges - smutty (1 kg)', 'Green bins (1 kg)', 'mango (1 kg)', 'Carrot (1 kg)']
                              #  'Zucchini (1 kg)',
                              #  'Tomatoes - Cherry (1 kg)',
                              #  'lemons (1 kg)',
@@ -49,14 +43,31 @@ if __name__ == '__main__':
     full_relevant_data = filter_data_by_year.iloc[:, column_indices]
     print('*')
 
+    # groups_by_year = full_relevant_data.groupby('Year')
+    # for current_year, mini_df_year in groups_by_year:
+    #     print("The current year is: ", current_year)
+    #     print(mini_df_year)
+    #     mini_df_year = mini_df_year.apply(pd.to_numeric)
+    #     for idx in np.arange(1, mini_df_year.shape[1]):
+    #         #res = mini_df_year.loc[:,'lemons (1 kg)'].mean()
+    #         res = mini_df_year.iloc[:, idx].mean()
+    #         print('*')
+    #         # avg_price_calulation = pd.concat([avg_price_calulation, res], axis=0)
+    #         # print('*')
+
+    first_row = []
     groups_by_year = full_relevant_data.groupby('Year')
     for current_year, mini_df_year in groups_by_year:
+
         print("The current year is: ", current_year)
         print(mini_df_year)
         mini_df_year = mini_df_year.apply(pd.to_numeric)
-        for idx in np.arange(1, mini_df_year.shape[1]):
-            #res = mini_df_year.loc[:,'lemons (1 kg)'].mean()
-            res = mini_df_year.loc[:, idx].mean()
-
-            avg_price_calulation = pd.concat([avg_price_calulation, res], axis=0)
         print('*')
+        for col in mini_df_year.columns[1:]:  # Skip the first column assuming it's 'Year'
+            res = mini_df_year[col].mean()
+            print(f"Mean price for {col}: {res}")
+
+            #table_stat_price = pd.concat([table_stat_price, res], axis=0)
+            first_row.append(res)
+
+            print('*')
