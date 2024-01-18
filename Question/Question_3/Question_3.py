@@ -53,7 +53,7 @@ def creating_the_data_food_item_prices_by_percentage_change_range_of_years_(df, 
     #table_stat_price['Year'] = pd.DataFrame(np.arange(2013, 2023, 1), columns=['Year'])
     # Create a DataFrame from the range of years
     year_df = pd.DataFrame(np.arange(2013, 2023, 1), columns=['Year'])
-    # Concatenate along the columns
+    # Concatenate along the columns - TODO: not working well!
     result_df = pd.merge(percentage_changes_format, year_df, on="Year")
 
     #result_df = pd.concat([percentage_changes_format, list_of_years], axis=1)
