@@ -12,7 +12,6 @@ import seaborn as sns
 def creating_the_data_food_item_prices_by_percentage_change_range_of_years(df,starting_year , ending_year ):
 
     filter_data_by_year = df.loc[(df['Year'] <= ending_year) & (df['Year'] > starting_year)]
-
     food_items_filter = [ 'Year', 'Apples - Golden Delicious (1 kg)', 'Apples - Granny Smith (1 kg)', 'Oranges - smutty (1 kg)', 'Green bins (1 kg)', 'mango (1 kg)', 'Carrot (1 kg)']
     column_indices = [filter_data_by_year.columns.get_loc(col) for col in food_items_filter]  # filter_vegi_and_fruits
     full_relevant_data = filter_data_by_year.iloc[:, column_indices]
