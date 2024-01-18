@@ -9,21 +9,32 @@ import seaborn as sns
 # input:
 # return value:
 # ****************************************************************************************************************
-def creating_the_data_food_item_prices_by_percentage_change_range_of_years(df,starting_year , ending_year ):
+def creating_the_data_food_item_prices_by_percentage_change_range_of_years_(df, ending_year, starting_year):
 
     filter_data_by_year = df.loc[(df['Year'] <= ending_year) & (df['Year'] > starting_year)]
-    food_items_filter = [ 'Year', 'Apples - Golden Delicious (1 kg)', 'Apples - Granny Smith (1 kg)', 'Oranges - smutty (1 kg)', 'Green bins (1 kg)', 'mango (1 kg)', 'Carrot (1 kg)']
-    column_indices = [filter_data_by_year.columns.get_loc(col) for col in food_items_filter]  # filter_vegi_and_fruits
+
+
+    filter_milk_products = ['Year',
+                            "Hard yellow cheese from cow's milk (100 g)",
+                            #'Pasteurized milk in a bag (1 liter)',# Not relevant row
+                            'Leben (200 ml)',
+                            "Cottage cheese' (250 grams)",
+                            'Soft white cheese (250 grams)',
+                            'Margarine for spreading in a cup (250 grams)',
+                            'Natural yogurt in a plastic container (200 ml)']
+
+    column_indices = [filter_data_by_year.columns.get_loc(col) for col in filter_milk_products]  # filter_vegi_and_fruits
     full_relevant_data = filter_data_by_year.iloc[:, column_indices]
     print('*')
+    table_stat_price = pd.DataFrame({'Year':[],
+                                     "Hard yellow cheese from cow's milk (100 g)": [],
+                                     'Leben (200 ml)': [],
+                                     "Cottage cheese' (250 grams)": [],
+                                     'Soft white cheese (250 grams)': [],
+                                     'Margarine for spreading in a cup (250 grams)': [],
+                                     'Natural yogurt in a plastic container (200 ml)': []})
 
-    table_stat_price = pd.DataFrame({'Year': [],
-                                     'Apples - Golden Delicious (1 kg)': [],
-                                     'Apples - Granny Smith (1 kg)': [],
-                                     'Oranges - smutty (1 kg)': [],
-                                     'Green bins (1 kg)': [],
-                                     'mango (1 kg)': [],
-                                     'Carrot (1 kg)': []})
+
 
     groups_by_year = full_relevant_data.groupby('Year')
     for current_year, mini_df_year in groups_by_year:
@@ -37,15 +48,19 @@ def creating_the_data_food_item_prices_by_percentage_change_range_of_years(df,st
     table_stat_price = table_stat_price.apply(pd.to_numeric)
     percentage_changes = table_stat_price.pct_change()
     percentage_changes.drop('Year', axis=1, inplace=True)  # drop a column
-    percentage_changes.drop(0, inplace=True) # drop first row
+    #percentage_changes.drop(0, inplace=True)  # drop first row
     percentage_changes_format = percentage_changes.applymap(lambda x: f'{x * 100:.1f}')
-    # table_stat_price['Year'] = pd.to_numeric(table_stat_price['Year'])
+    #table_stat_price['Year'] = pd.DataFrame(np.arange(2013, 2023, 1), columns=['Year'])
     # Create a DataFrame from the range of years
-    list_of_years = pd.DataFrame(np.arange(2013, 2023, 1), columns=['Year'])
+    year_df = pd.DataFrame(np.arange(2013, 2023, 1), columns=['Year'])
     # Concatenate along the columns
-    result_df = pd.concat([percentage_changes_format, list_of_years], axis=1)
+    result_df = pd.merge(percentage_changes_format, year_df, on="Year")
+
+    #result_df = pd.concat([percentage_changes_format, list_of_years], axis=1)
+    print('*')
 
     return result_df
+
 
 if __name__ == '__main__':
 
@@ -56,26 +71,14 @@ if __name__ == '__main__':
     column_headers = list(df.columns.values)
     print("The Column Header :", column_headers)
 
-    creating_the_data_Food_Item_Prices_by_Percentage_Change_Range_of_Years(df, starting_year=2012, ending_year=2022)
+    ending_year = 2022
+    starting_year = 2007
+
+    result_df = creating_the_data_food_item_prices_by_percentage_change_range_of_years_(df, ending_year, starting_year)
+    print('*')
 
 
-                             #  'Zucchini (1 kg)',
-                             #  'Tomatoes - Cherry (1 kg)',
-                             #  'lemons (1 kg)',
-                             #  'Potatoes (1 kg)',
-                             #  'Cucumbers (1 kg)',
-                             # 'Chicken Breast (1 kg)',
-                             # 'Chicken meat with toppings (1 portion)',starting to create the data for the matrix chart heatmap
-                             # 'Fresh beef for steak - shoulder (1 kg)',
-                             # 'Frozen beef for roasting (1 kg)',
-                             # 'Fresh tilapia fish (1 kg)',
-                             # 'Frozen beef - ribs (1 kg)',
-                             # 'Frozen beef liver (1 kg)',
-                             # 'Packaged frozen chicken (1 kg)',
-                             # 'Frozen salmon fish (Ilatit). (1 kg)',
-                             # 'Frozen tilapia fillet fish (Mosht). (1 kg)',
-                             # 'Nile princess fillet fish, frozen (1 kg)']
-                             #
+
 
 
     # # Reshape the DataFrame for heatmap
