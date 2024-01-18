@@ -14,16 +14,15 @@ def creating_the_data_food_item_prices_by_percentage_change_range_of_years_(df, 
     filter_data_by_year = df.loc[(df['Year'] <= ending_year) & (df['Year'] > starting_year)]
 
 
-    filter_milk_products = ['Year',
+    filter_Dairy_Product = ['Year',
                             "Hard yellow cheese from cow's milk (100 g)",
-                            #'Pasteurized milk in a bag (1 liter)',# Not relevant row
                             'Leben (200 ml)',
                             "Cottage cheese' (250 grams)",
                             'Soft white cheese (250 grams)',
                             'Margarine for spreading in a cup (250 grams)',
                             'Natural yogurt in a plastic container (200 ml)']
 
-    column_indices = [filter_data_by_year.columns.get_loc(col) for col in filter_milk_products]  # filter_vegi_and_fruits
+    column_indices = [filter_data_by_year.columns.get_loc(col) for col in filter_Dairy_Product]  # filter_vegi_and_fruits
     full_relevant_data = filter_data_by_year.iloc[:, column_indices]
     print('*')
     table_stat_price = pd.DataFrame({'Year':[],
