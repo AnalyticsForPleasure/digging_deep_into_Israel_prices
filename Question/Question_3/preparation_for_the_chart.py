@@ -27,7 +27,6 @@ ax1.set_xticklabels(["Hard yellow cheese\n(100 g)", 'Leben\n(200 ml)', "Cottage 
                     rotation=45, ha='right', weight='bold',color = 'darkgreen')
 ax1.set_yticklabels(['Year {}'.format(i) for i in range(2009, 2023)], rotation=0,weight='bold',color = 'darkgreen')  # Customize y-axis labels
 
-
 ax1.set_title('Variation in Dairy Product Prices\nOver the Past 15 Years', fontsize=20, fontname='Franklin Gothic Medium Cond')
 ax2.set_title('Upward Shift in Dairy Product Prices', fontsize=20, fontname='Franklin Gothic Medium Cond')
 
