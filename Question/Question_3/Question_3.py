@@ -47,12 +47,14 @@ def creating_the_data_food_item_prices_by_percentage_change_range_of_years(df,st
 
     return result_df
 
-
 if __name__ == '__main__':
 
     pd.set_option('display.max_rows', 5000)
     df = pd.read_csv('/home/shay_diy/PycharmProjects/digging_deep_into_Israel_prices/Data/israel_prices.csv')
     df = df.replace(np.nan, '', regex=True)
+
+    column_headers = list(df.columns.values)
+    print("The Column Header :", column_headers)
 
     creating_the_data_Food_Item_Prices_by_Percentage_Change_Range_of_Years(df, starting_year=2012, ending_year=2022)
 
