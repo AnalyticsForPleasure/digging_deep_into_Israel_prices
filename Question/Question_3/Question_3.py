@@ -88,7 +88,6 @@ def creating_advance_heatmap(data):
 
     ax1.set_title('Variation in Dairy Product Prices\nOver the Past 15 Years', fontsize=20, fontname='Franklin Gothic Medium Cond')
     plt.tight_layout()
-
     plt.savefig('heatmap_Advance_chart.jpg', dpi=250, bbox_inches='tight')
     plt.show()
 
