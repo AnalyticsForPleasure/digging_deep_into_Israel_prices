@@ -61,19 +61,30 @@ def creating_the_data_food_item_prices_by_percentage_change_range_of_years_(df, 
 # ****************************************************************************************************************
 def creating_advance_heatmap(data):
 
+    # Convert DataFrame to NumPy array - inorder to countinue running with the chart
+    numpy_array_data = data.values
+
     fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12, 9))
 
     sns.set_style('white')
-    sns.heatmap(data, linewidth=3.5, annot=True, square=False, ax=ax1, cmap='Greens', fmt=".1%",
+
+    # Heatmap number 1 :
+    sns.heatmap(numpy_array_data, linewidth=3.5, annot=True, square=False, ax=ax1, cmap='Greens', fmt=".1%",
                     cbar_kws={'label': 'Percentage'}, annot_kws={'weight': 'bold', 'size': 10})
 
-    min_columns = data.idxmin(axis=1)
-    min_columns_colors = ['limegreen' if col == data.columns.get_loc(min_col) else 'none' for col, min_col in zip(range(len(data)), min_columns)]
-    sns.heatmap(data, mask=data != data.min(axis=1, keepdims=True), annot=True, lw=2, linecolor='black',
-                    clip_on=False,
-                    cmap=ListedColormap(min_columns_colors), cbar=False, ax=ax2, fmt=".1%",
-                    cbar_kws={'label': 'Percentage'},
-                    annot_kws={'weight': 'bold', 'size': 10})
+    # Creating the squares for heatmap 1
+    for ind, row in enumerate(numpy_array_data):
+        min_col = np.argmax(row)
+        ax1.add_patch(plt.Rectangle((min_col, ind), 1, 1, fc='none', ec='limegreen', lw=3.5, clip_on=False))
+
+    # Explanation for heatmap 2 :
+    # This this code is creating a heatmap where each row is highlighted, showing the minimum value in each row
+    # and masking (hiding) the other values. The purpose of the mask is to emphasize the minimum/ maximun value in each row.
+
+    sns.heatmap(numpy_array_data, mask=numpy_array_data != numpy_array_data.max(axis=1, keepdims=True), annot=True, lw=2, linecolor='black', clip_on=False,
+                cmap=ListedColormap(['limegreen']), cbar=False, ax=ax2, fmt=".1%",
+                cbar_kws={'label': 'Percentage'},
+                annot_kws={'weight': 'bold', 'size': 10})
 
     # Customize x-axis and y-axis labels
     x_labels = ["Hard yellow cheese\n(100 g)", 'Leben\n(200 ml)', "Cottage cheese'\n(250 grams)",
@@ -90,41 +101,6 @@ def creating_advance_heatmap(data):
     plt.tight_layout()
     plt.savefig('heatmap_Advance_chart.jpg', dpi=250, bbox_inches='tight')
     plt.show()
-
-
-    # fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12, 9))
-    #
-    # sns.set_style('white')
-    # sns.heatmap(data, linewidth=3.5, annot=True, square=False, ax=ax1, cmap='Grays', fmt=".1%",
-    #             cbar_kws={'label': 'Percentage'}, annot_kws={'weight': 'bold', 'size': 10})
-    #
-    # for ind, row in enumerate(data):
-    #     min_col = np.argmin(row)
-    #     ax1.add_patch(plt.Rectangle((min_col, ind), 1, 1, fc='none', ec='limegreen', lw=3.5, clip_on=False))
-    # sns.heatmap(data, mask=data != data.min(axis=1, keepdims=True), annot=True, lw=2, linecolor='black', clip_on=False,
-    #             cmap=ListedColormap(['limegreen']), cbar=False, ax=ax2, fmt=".1%", cbar_kws={'label': 'Percentage'},
-    #             annot_kws={'weight': 'bold', 'size': 10})
-    # # for idx in len(np.arange(0,2,1)):
-    # ax2.set_xticklabels(["Hard yellow cheese\n(100 g)", 'Leben\n(200 ml)', "Cottage cheese'\n(250 grams)",
-    #                      'Soft white cheese\n(250 grams)', 'Margarine\n(250 grams)', 'Natural yogurt\n(200 ml)'],
-    #                     rotation=45, ha='right', weight='bold', color='darkgreen')
-    # ax2.set_yticklabels(['Year {}'.format(i) for i in range(2009, 2023)], rotation=0, weight='bold',
-    #                     color='darkgreen')  # Customize y-axis labels
-    #
-    # ax1.set_xticklabels(["Hard yellow cheese\n(100 g)", 'Leben\n(200 ml)', "Cottage cheese'\n(250 grams)",
-    #                      'Soft white cheese\n(250 grams)', 'Margarine\n(250 grams)', 'Natural yogurt\n(200 ml)'],
-    #                     rotation=45, ha='right', weight='bold', color='darkgreen')
-    # ax1.set_yticklabels(['Year {}'.format(i) for i in range(2009, 2023)], rotation=0, weight='bold',
-    #                     color='darkgreen')  # Customize y-axis labels
-    # #
-    # # # Adjust subplot layout to make room for upper labels
-    # # plt.subplots_adjust(top=0.9)
-    # ax1.set_title('Variation in Dairy Product Prices\nOver the Past 15 Years', fontsize=20,
-    #               fontname='Franklin Gothic Medium Cond')
-    # ax2.set_title('Upward Shift in Dairy Product Prices', fontsize=20, fontname='Franklin Gothic Medium Cond')
-    # plt.tight_layout()
-    # plt.savefig('heatmap_Advance_chart.jpg', dpi=250, bbox_inches='tight')
-    # plt.show()
 
 
 if __name__ == '__main__':
@@ -145,27 +121,4 @@ if __name__ == '__main__':
 
 
 
-
-
-    # # Reshape the DataFrame for heatmap
-    # heatmap_data = result_df.melt(id_vars='Year', var_name='Food_Item', value_name='Percentage_Change')
-    #
-    # # Define the percentage change categories for color mapping
-    # categories = ['<-10%', '-10%-<-8%', '-8%-<-6%', '-6%-<-4%', '-4%-<-2%', '-2%-0%', '0%-2%', '2%-4%', '4%-6%',
-    #               '6%-8%', '8%-10%', '>10%']
-    #
-    # # Create a heatmap
-    # plt.figure(figsize=(12, 8))
-    # sns.heatmap(heatmap_data.pivot('Year', 'Food_Item', 'Percentage_Change'),
-    #             cmap='RdYlBu_r',
-    #             annot=True,
-    #             fmt=".1f",
-    #             cbar_kws={'label': 'Percentage Change'},
-    #             vmin=-10, vmax=10,  # Adjust these values based on your data range
-    #             yticklabels=categories,
-    #             linewidths=.5)
-    # plt.title('Heatmap of Food Item Prices by Percentage Change Range Over 10 Years')
-    # plt.xlabel('Food Item')
-    # plt.ylabel('Percentage Change Range')
-    # plt.show()
 
