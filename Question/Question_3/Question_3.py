@@ -80,7 +80,6 @@ def creating_advance_heatmap(data):
     # Explanation for heatmap 2 :
     # This this code is creating a heatmap where each row is highlighted, showing the minimum value in each row
     # and masking (hiding) the other values. The purpose of the mask is to emphasize the minimum/ maximun value in each row.
-
     sns.heatmap(numpy_array_data, mask=numpy_array_data != numpy_array_data.max(axis=1, keepdims=True), annot=True, lw=2, linecolor='black', clip_on=False,
                 cmap=ListedColormap(['limegreen']), cbar=False, ax=ax2, fmt=".1%",
                 cbar_kws={'label': 'Percentage'},
@@ -91,11 +90,10 @@ def creating_advance_heatmap(data):
                     'Soft white cheese\n(250 grams)', 'Margarine\n(250 grams)', 'Natural yogurt\n(200 ml)']
     y_labels = ['Year {}'.format(i) for i in range(2009, 2023)]
 
-    ax2.set_xticklabels(x_labels, rotation=45, ha='right', weight='bold', color='darkgreen')
-    ax2.set_yticklabels(y_labels, rotation=0, weight='bold', color='darkgreen')
-
-    ax1.set_xticklabels(x_labels, rotation=45, ha='right', weight='bold', color='darkgreen')
-    ax1.set_yticklabels(y_labels, rotation=0, weight='bold', color='darkgreen')
+    # loop iterates over the two subplots (ax1 and ax2)
+    for ax in [ax1, ax2]:
+        ax.set_xticklabels(x_labels, rotation=45, ha='right', weight='bold', color='darkgreen')
+        ax.set_yticklabels(y_labels, rotation=0, weight='bold', color='darkgreen')
 
     ax1.set_title('Variation in Dairy Product Prices\nOver the Past 15 Years', fontsize=20, fontname='Franklin Gothic Medium Cond')
     plt.tight_layout()
