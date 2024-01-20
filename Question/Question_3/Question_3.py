@@ -80,14 +80,14 @@ def creating_advance_heatmap(data):
     # Creating the squares for heatmap 1
     for ind, row in enumerate(numpy_array_data):
         min_col = np.argmax(row)
-        ax1.add_patch(plt.Rectangle((min_col, ind), 1, 1, fc='none', ec='limegreen', lw=3.5, clip_on=False))
+        ax1.add_patch(plt.Rectangle((min_col, ind), 1, 1, fc='none', ec='red', lw=3.5, clip_on=False))
 
     # Explanation for heatmap 2 :
     # This this code is creating a heatmap where each row is highlighted, showing the minimum value in each row
     # and masking (hiding) the other values. The purpose of the mask is to emphasize the minimum/ maximun value in each row.
     ax22 = sns.heatmap(numpy_array_data, mask=numpy_array_data != numpy_array_data.max(axis=1, keepdims=True),
                        annot=True, lw=2, linecolor='black', clip_on=False,
-                       cmap=ListedColormap(['limegreen']), cbar=False, ax=ax2, fmt=".2f",
+                       cmap=ListedColormap(['red']), cbar=False, ax=ax2, fmt=".2f",
                        cbar_kws={'label': 'Percentage'},
                        annot_kws={'weight': 'bold', 'size': 10})
 
@@ -100,12 +100,12 @@ def creating_advance_heatmap(data):
 
     # loop iterates over the two subplots (ax1 and ax2)
     for ax in [ax1, ax2]:
-        ax.set_xticklabels(x_labels, rotation=45, ha='right', weight='bold', color='darkgreen')
-        ax.set_yticklabels(y_labels, rotation=0, weight='bold', color='darkgreen')
+        ax.set_xticklabels(x_labels, rotation=45, ha='right', weight='bold', color='brown')
+        ax.set_yticklabels(y_labels, rotation=0, weight='bold', color='brown')
 
     ax1.set_title('The annual variance of Dairy Product\nPrices over a 15-year period', fontsize=20,
                   fontname='Franklin Gothic Medium Cond')
-    ax2.set_title('Which product experienced the highest\nprice growth each year?', fontsize=20,
+    ax2.set_title('Which product witnessed the most significant\ndecrease in price growth each year?', fontsize=20,
                   fontname='Franklin Gothic Medium Cond')
 
     plt.tight_layout()
